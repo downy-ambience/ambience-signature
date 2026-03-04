@@ -6,7 +6,7 @@
 
 ## Step 1. 서명 생성하기
 
-**서명 생성 페이지 접속 👉 [여기를 클릭](http://localhost:8090)**
+**서명 생성 페이지 접속 👉 [여기를 클릭](https://downy-ambience.github.io/ambience-signature/)**
 
 아래 정보를 입력해주세요:
 
