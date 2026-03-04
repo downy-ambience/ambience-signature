@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambience — 이메일 서명 생성기</title>
+  <meta name="description" content="Ambience 이메일 서명을 손쉽게 만들고 복사하세요." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Top Nav Bar -->
+  <nav class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-brand">
+        <img src="assets/logo.png" alt="ambience" class="nav-logo" />
+        <span class="nav-divider"></span>
+        <span class="nav-title">이메일 서명 생성기</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <h1 class="hero-title">이메일 서명 생성기</h1>
+    <p class="hero-subtitle">정보를 입력하고 서명을 복사하세요 — 30초면 완료됩니다</p>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+
+    <!-- Left: Form -->
+    <section class="card" id="form-card">
+      <div class="card-header">
+        <span class="material-icons-round card-icon">edit</span>
+        <span class="card-title">내 정보 입력</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sig-name">이름 (Name)</label>
+        <input class="form-input" type="text" id="sig-name" placeholder="Downy Jung" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sig-title">직책 (Title)</label>
+          <input class="form-input" type="text" id="sig-title" placeholder="Producer" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sig-dept">부서 (Department)</label>
+          <select class="form-input form-select" id="sig-dept">
+            <option value="">선택 안함</option>
+            <option value="Production Dept.">Production Dept.</option>
+            <option value="Matter Lab.">Matter Lab. (Post-Visual)</option>
+            <option value="Visual & Creative Dept.">Visual & Creative Dept.</option>
+            <option value="Contents IP Dept.">Contents IP Dept.</option>
+            <option value="Lucent Label">Lucent Label (Music Label)</option>
+            <option value="Show Business Dept.">Show Business Dept.</option>
+            <option value="Operation Dept.">Operation Dept.</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sig-phone">전화번호 (Phone)</label>
+        <div class="phone-row">
+          <select class="form-input form-select phone-code" id="sig-country">
+            <option value="+82">🇰🇷 +82</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+          </select>
+          <input class="form-input" type="text" id="sig-phone" placeholder="01012345678" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sig-email">이메일 (Email)</label>
+        <input class="form-input" type="email" id="sig-email" placeholder="name@ambienceseoul.com" />
+      </div>
+
+      <div class="form-group logo-section">
+        <label class="form-label" for="sig-logo-url">Logo URL (Optional)</label>
+        <input class="form-input" type="url" id="sig-logo-url" placeholder="https://..." />
+        <p class="logo-hint">이미지 URL을 입력하면 로고가 교체됩니다. 비워두면 기본 로고가 사용됩니다.</p>
+      </div>
+    </section>
+
+    <!-- Right: Preview + Copy -->
+    <section class="card preview-card">
+      <div class="card-header">
+        <span class="material-icons-round card-icon">visibility</span>
+        <span class="card-title">미리보기</span>
+        <div class="preview-actions">
+          <button class="btn btn-ghost" id="btn-copy-code">
+            <span class="material-icons-round btn-icon-sm">code</span> HTML 코드
+          </button>
+          <button class="btn btn-primary" id="btn-copy">
+            <span class="material-icons-round btn-icon-sm">content_copy</span> 서명 복사
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-frame" id="signature-preview">
+        <!-- Signature renders here -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Guide -->
+  <section class="guide-section">
+    <div class="card guide-card">
+      <div class="card-header">
+        <span class="material-icons-round card-icon">help</span>
+        <span class="card-title">서명 적용 방법</span>
+      </div>
+
+      <div class="guide-tabs">
+        <button class="guide-tab active" data-target="guide-gmail">Gmail</button>
+        <button class="guide-tab" data-target="guide-outlook">Outlook</button>
+        <button class="guide-tab" data-target="guide-apple">Apple Mail</button>
+      </div>
+
+      <div class="guide-content active" id="guide-gmail">
+        <div class="guide-grid">
+          <div class="guide-step">
+            <div class="step-number">1</div>
+            <h4>서명 복사하기</h4>
+            <p>위의 <strong>'서명 복사'</strong> 버튼을 클릭하여 생성된 서명을 클립보드에 복사합니다.</p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">2</div>
+            <h4>Gmail 설정 열기</h4>
+            <p>우측 상단의 <strong>톱니바퀴 아이콘</strong>을 클릭하고 <strong>'모든 설정 보기'</strong>를 선택합니다.</p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">3</div>
+            <h4>서명 붙여넣기 및 저장</h4>
+            <p><strong>'기본설정'</strong> 탭 → <strong>'서명'</strong> 섹션 → 복사한 서명을 붙여넣고 저장합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-content" id="guide-outlook">
+        <div class="guide-grid">
+          <div class="guide-step">
+            <div class="step-number">1</div>
+            <h4>서명 복사하기</h4>
+            <p>위의 <strong>'서명 복사'</strong> 버튼을 클릭합니다.</p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">2</div>
+            <h4>Outlook 설정 열기</h4>
+            <p><strong>설정 (⚙️)</strong> → <strong>'Outlook의 모든 설정 보기'</strong> → <strong>'메일'</strong> → <strong>'작성 및
+                회신'</strong></p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">3</div>
+            <h4>서명 붙여넣기 및 저장</h4>
+            <p><strong>'+ 새 서명'</strong> → 이름 입력 → 편집 영역에 <strong>붙여넣기</strong> → 기본 서명 지정 후 <strong>저장</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-content" id="guide-apple">
+        <div class="guide-grid">
+          <div class="guide-step">
+            <div class="step-number">1</div>
+            <h4>HTML 코드 복사</h4>
+            <p>위의 <strong>'HTML 코드'</strong> 버튼을 클릭하여 HTML을 복사합니다.</p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">2</div>
+            <h4>Mail 설정 열기</h4>
+            <p>Apple Mail → <strong>설정 (⌘,)</strong> → <strong>'서명'</strong> 탭 → <strong>'+'</strong> 클릭</p>
+          </div>
+          <div class="guide-step">
+            <div class="step-number">3</div>
+            <h4>서명 붙여넣기</h4>
+            <p>서명 편집 영역에 <strong>⌘+V</strong>로 붙여넣기합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 Ambience. All rights reserved.</p>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
