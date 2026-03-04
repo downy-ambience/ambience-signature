@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fields = {
-    name: document.getElementById('sig-name'),
+    firstname: document.getElementById('sig-firstname'),
+    lastname: document.getElementById('sig-lastname'),
     title: document.getElementById('sig-title'),
     dept: document.getElementById('sig-dept'),
     country: document.getElementById('sig-country'),
@@ -80,7 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Generate Signature HTML ──
   function generateSignatureHTML(data, forClipboard = false) {
-    const name = data.name || 'Downy Jung';
+    const name = data.firstname && data.lastname
+      ? `${data.firstname} ${data.lastname}`
+      : data.firstname || data.lastname || 'Downy Jung';
     const title = data.title || 'Producer';
     const dept = data.dept || '';
 
@@ -133,7 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getCurrentData() {
     return {
-      name: fields.name.value.trim(),
+      firstname: fields.firstname.value.trim(),
+      lastname: fields.lastname.value.trim(),
       title: fields.title.value.trim(),
       dept: fields.dept.value.trim(),
       country: fields.country.value,
