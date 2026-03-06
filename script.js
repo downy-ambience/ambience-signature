@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     country: document.getElementById('sig-country'),
     phone: document.getElementById('sig-phone'),
     email: document.getElementById('sig-email'),
+    label: document.getElementById('sig-label'),
     logoUrl: document.getElementById('sig-logo-url'),
   };
 
@@ -14,24 +15,87 @@ document.addEventListener('DOMContentLoaded', () => {
   const copyBtn = document.getElementById('btn-copy');
   const copyCodeBtn = document.getElementById('btn-copy-code');
   const toast = document.getElementById('toast');
+  const logoThumb = document.getElementById('logo-preview-thumb');
+  const logoLabel = document.getElementById('logo-preview-label');
 
   // ── Constants ──
   const WEBSITE = 'ambienceseoul.com';
   const ADDRESS = '1F, 28 Wonhyo-ro, Yongsan-gu, Seoul, South Korea 04383';
   const BRAND_BLUE = '#1a3cba';
-  // Default logo hosted URL — change this to your own hosted logo URL
-  const DEFAULT_LOGO_URL = 'assets/logo.png';
 
-  // ── Pre-load logo as base64 for clipboard copies ──
-  let logoBase64 = '';
-  fetch(DEFAULT_LOGO_URL)
-    .then(res => res.blob())
-    .then(blob => {
-      const reader = new FileReader();
-      reader.onloadend = () => { logoBase64 = reader.result; };
-      reader.readAsDataURL(blob);
-    })
-    .catch(() => { logoBase64 = ''; });
+  // ── Label → Logo Mapping ──
+  // 각 레이블별 로고 경로와 표시 이름
+  const LABEL_LOGOS = {
+    'ambience': {
+      url: 'assets/logo.png',
+      name: 'Ambience 기본 로고',
+      isSubLabel: false,
+    },
+    'the-pair-show': {
+      url: 'assets/logo-the-pair-show.png',
+      name: 'The Pair Show 로고',
+      isSubLabel: true,
+    },
+    'bubble': {
+      url: 'assets/logo-bubble.png',
+      name: 'Bubble (Contents IP) 로고',
+      isSubLabel: true,
+    },
+  };
+
+  // ── Pre-load ALL label logos as base64 for clipboard copies ──
+  const logoBase64Map = {};
+
+  function preloadImage(url, callback) {
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('Image not found');
+        return res.blob();
+      })
+      .then(blob => {
+        const reader = new FileReader();
+        reader.onloadend = () => { callback(reader.result); };
+        reader.readAsDataURL(blob);
+      })
+      .catch(() => { callback(''); });
+  }
+
+  function preloadLogo(labelKey) {
+    const logoInfo = LABEL_LOGOS[labelKey];
+    if (!logoInfo) return;
+    preloadImage(logoInfo.url, (base64) => { logoBase64Map[labelKey] = base64; });
+  }
+
+  // Pre-load all logos + wordmark on page load
+  Object.keys(LABEL_LOGOS).forEach(preloadLogo);
+
+
+  // ── Get current logo URL based on label + custom URL ──
+  function getCurrentLogoUrl(forClipboard = false) {
+    const customUrl = fields.logoUrl.value.trim();
+    if (customUrl) return customUrl;
+
+    const label = fields.label.value || 'ambience';
+    if (forClipboard && logoBase64Map[label]) {
+      return logoBase64Map[label];
+    }
+    return LABEL_LOGOS[label]?.url || LABEL_LOGOS['ambience'].url;
+  }
+
+  // ── Update logo preview thumb ──
+  function updateLogoPreview() {
+    const customUrl = fields.logoUrl.value.trim();
+    const label = fields.label.value || 'ambience';
+    const labelInfo = LABEL_LOGOS[label] || LABEL_LOGOS['ambience'];
+
+    if (customUrl) {
+      logoThumb.src = customUrl;
+      logoLabel.textContent = '커스텀 로고';
+    } else {
+      logoThumb.src = labelInfo.url;
+      logoLabel.textContent = labelInfo.name;
+    }
+  }
 
   // ── Phone Number Formatting ──
   function formatPhone(raw, countryCode) {
@@ -95,18 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullPhone = `${country} ${formattedPhone}`;
     const email = data.email || 'name@ambienceseoul.com';
 
-    // Use custom URL if provided, otherwise local for preview / base64 for clipboard
-    let logoSrc;
-    if (data.logoUrl) {
-      logoSrc = data.logoUrl;
-    } else if (forClipboard && logoBase64) {
-      logoSrc = logoBase64;
-    } else {
-      logoSrc = DEFAULT_LOGO_URL;
-    }
-
+    const logoSrc = getCurrentLogoUrl(forClipboard);
+    const label = data.label || 'ambience';
+    const labelInfo = LABEL_LOGOS[label] || LABEL_LOGOS['ambience'];
     const logoCell = `<td style="width:140px;vertical-align:middle;text-align:right;padding-left:24px;">
-           <img src="${logoSrc}" alt="ambience" style="width:120px;height:120px;border-radius:50%;display:block;" />
+           <img src="${logoSrc}" alt="${label}" style="width:120px;height:120px;border-radius:50%;display:block;" />
          </td>`;
 
     return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:520px;">
@@ -132,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updatePreview() {
     const data = getCurrentData();
     preview.innerHTML = generateSignatureHTML(data, false);
+    updateLogoPreview();
   }
 
   function getCurrentData() {
@@ -143,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
       country: fields.country.value,
       phone: fields.phone.value.trim(),
       email: fields.email.value.trim(),
+      label: fields.label.value,
       logoUrl: fields.logoUrl.value.trim(),
     };
   }
@@ -209,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Event Listeners ──
   Object.values(fields).forEach((input) => {
     input.addEventListener('input', updatePreview);
+    input.addEventListener('change', updatePreview);
   });
 
   copyBtn.addEventListener('click', () => copySignature(false));

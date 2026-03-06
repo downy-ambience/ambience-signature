@@ -256,6 +256,75 @@ body {
   line-height: 1.6;
 }
 
+/* ── Logo Preview Row ── */
+.logo-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  transition: border-color var(--transition);
+}
+
+.logo-preview-row:hover {
+  border-color: var(--border-hover);
+}
+
+.logo-preview-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.logo-preview-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* ── Custom Logo Details (collapsible) ── */
+.custom-logo-details {
+  margin-top: 10px;
+}
+
+.custom-logo-summary {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 0;
+  transition: color var(--transition);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-logo-summary::-webkit-details-marker {
+  display: none;
+}
+
+.custom-logo-summary::before {
+  content: '▸';
+  font-size: 10px;
+  transition: transform var(--transition);
+}
+
+.custom-logo-details[open] .custom-logo-summary::before {
+  transform: rotate(90deg);
+}
+
+.custom-logo-summary:hover {
+  color: var(--text-secondary);
+}
+
 /* ── Preview ── */
 .preview-card {
   position: sticky;
