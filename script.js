@@ -182,6 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
     </td>
     ${logoCell}
   </tr>
+  <tr>
+    <td colspan="2" style="padding-top:10px;">
+      <div style="font-size:9.5px;color:#cc0000;line-height:1.6;border-top:1px solid #e0e0e0;padding-top:8px;">
+        <strong>CONFIDENTIALITY NOTICE:</strong> This email and any attachments are intended solely for the recipient and contain confidential material. Any unauthorized use or distribution is strictly prohibited. If received in error, please notify the sender and delete all copies.<br/>
+        본 메일은 수신인 전용 기밀을 포함하고 있으며, 무단 전재 및 배포를 금합니다. 오발송된 경우 즉시 파기 후 발신인에게 알려주시기 바랍니다.
+      </div>
+    </td>
+  </tr>
 </table>`;
   }
 
